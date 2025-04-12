@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: 'https://quizwebapplication.vercel.app',
+  //origin: 'https://quizwebapplication.vercel.app',
+  origin: 'http://localhost:5173',
     credentials: true,
   };
 
@@ -40,7 +41,7 @@ const jwtMiddleware = (req, res, next) => {
 };
 app.post('/saveperformance', jwtMiddleware, async (req, res) => {
   const { score, total } = req.body;
-
+console.log(req.body)
   try {
     const user = await User.findOne({ username: req.user.username });
     
@@ -229,19 +230,7 @@ app.get('/api/random-question', async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch question from external API.' });
     }
   });
-  app.post('/api/submit-performance', async (req, res) => {
-    const { questionId, selectedOption, correctAnswer } = req.body;
-    const correct = selectedOption === correctAnswer;
-  
-    const newPerf = new Performance({
-      questionId,
-      selectedOption,
-      correct
-    });
-  
-    await newPerf.save();
-    res.json({ success: true, correct });
-  });
+
 // mongoose.connect(process.env.VITE_URL)
 // mongoose.connect("mongodb://localhost:27017/quiz")
 
