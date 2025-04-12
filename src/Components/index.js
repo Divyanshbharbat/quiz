@@ -38,6 +38,27 @@ const jwtMiddleware = (req, res, next) => {
     res.send("fail");
   }
 };
+app.post('/saveperformance', jwtMiddleware, async (req, res) => {
+  const { score, total } = req.body;
+
+  try {
+    const user = await User.findOne({ username: req.user.username });
+    
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const performance = new Performance({ score, total });
+    const saved = await performance.save();
+
+    user.performance.push(saved._id);
+    const y=await user.save();
+
+    res.status(200).json({ message: 'Performance saved and linked to user!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
 
 app.post('/adminlogin', async (req, res) => {
   const { admin, password } = req.body;
@@ -93,27 +114,7 @@ app.post("/login", async (req, res) => {
 
 
 
- app.post('/saveperformance', jwtMiddleware, async (req, res) => {
-    const { score, total } = req.body;
-  
-    try {
-      const user = await User.findOne({ username: req.user.username });
-      
-  
-      if (!user) return res.status(404).json({ error: 'User not found' });
-  
-      const performance = new Performance({ score, total });
-      const saved = await performance.save();
-  
-      user.performance.push(saved._id);
-      const y=await user.save();
- 
-      res.status(200).json({ message: 'Performance saved and linked to user!' });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    }
-  });
+
   
  // Backend Example using Express.js
 app.get('/getusername',jwtMiddleware, (req, res) => {

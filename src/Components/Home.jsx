@@ -110,6 +110,7 @@ export default function Home() {
     try {
       const res = await axios.post(
         //'http://localhost:3000/saveperformance',
+        //app.post('/saveperformance', jwtMiddleware, async (req, res) => {
         `${import.meta.env.VITE_APP}/saveperformance`,
         { score, total: questions.length },{withCredentials:true},
         { headers: { Authorization: `Bearer ${token}` } }
