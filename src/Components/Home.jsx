@@ -60,6 +60,7 @@ export default function Home() {
 
   const fetchQuestions = async () => {
     const res = await axios.get('https://opentdb.com/api.php?amount=5&type=multiple');
+    console.log(res)
     const decode = (text) => new DOMParser().parseFromString(text, "text/html").body.textContent;
 
     const formatted = res.data.results.map((q) => {
@@ -109,7 +110,7 @@ export default function Home() {
     try {
       const res = await axios.post(
         //'http://localhost:3000/saveperformance',
-        `${process.env.VITE_URL}/saveperformance`,
+        `${import.meta.env.VITE_APP}/saveperformance`,
         { score, total: questions.length },{withCredentials:true},
         { headers: { Authorization: `Bearer ${token}` } }
       );
