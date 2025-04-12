@@ -1,0 +1,12 @@
+.bg-gradient {
+    background: linear-gradient(to right, #8360c3, #2ebf91);
+  }
+  
+  .card {
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
