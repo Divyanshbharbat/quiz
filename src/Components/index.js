@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 const jwtMiddleware = (req, res, next) => {
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
-  
+ 
   if (!token) return res.status(401).send("fail");
   try {
     
@@ -39,6 +39,18 @@ const jwtMiddleware = (req, res, next) => {
     res.send("fail");
   }
 };
+app.get('/history', jwtMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.user.username }).populate('performance');
+console.log(user)
+    if (!user) return res.status(404).json({ error: 'User not found' });
+console.log(user.performance)
+    res.json(user.performance);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 app.post('/saveperformance', jwtMiddleware, async (req, res) => {
   const { score, total } = req.body;
 console.log(req.body)
@@ -136,18 +148,7 @@ app.get("/api/users",async(req,res)=>{
     }})
 
 
-  app.get('/performance', jwtMiddleware, async (req, res) => {
-    try {
-      const user = await User.findOne({ username: req.user.username }).populate('performance');
-  console.log(user)
-      if (!user) return res.status(404).json({ error: 'User not found' });
-  console.log(user.performance)
-      res.json(user.performance);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server error' });
-    }
-  });
+  
 
 const jwtMiddleware2 = (req, res, next) => {
   const token = req.cookies?.token2 || req.headers.authorization?.split(" ")[1];

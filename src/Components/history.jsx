@@ -14,10 +14,10 @@ const History = () => {
     const fetchHistory = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const res = await axios.get(`${import.meta.env.VITE_APP}/saveperformance`, {withCredentials:true},{
-          headers: { Authorization: `Bearer ${token}` },
-        });
+console.log(token)
+        const res = await axios.get(`${import.meta.env.VITE_APP}/history`,{
+          headers: { Authorization: `Bearer ${token}` }
+        }, {withCredentials:true});
 
         setPerformance(res.data.reverse()); // Latest first
         setLoading(false);
