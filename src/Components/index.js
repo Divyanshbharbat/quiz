@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: 'https://dquiz.netlify.app',
+  origin: 'https://d2quiz.netlify.app',
   // origin: 'http://localhost:5173',
     credentials: true,
   };
